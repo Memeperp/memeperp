@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">MemePerp logo and wordmark</title>
+  <desc id="desc">MemePerp, perpetual futures.</desc>
+  <g transform="translate(0 0) scale(.8)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M83 294v-54m67 54v-99m67 99v-77m67 77V176" stroke="#263d37" stroke-width="25"/>
+    <path d="m65 298 75-158 67 96 72-133 62 195" stroke="#3DF3C5" stroke-width="25"/>
+    <path d="M279 103h15" stroke="#dff9ef" stroke-width="7"/>
+  </g>
+  <text x="300" y="151" fill="#edf4ef" font-family="DejaVu Sans,sans-serif" font-size="77" font-weight="700" letter-spacing="-4">MEMEPERP</text>
+  <path d="M305 184h530" stroke="#3DF3C5" stroke-width="2" opacity=".72"/>
+  <text x="307" y="225" fill="#9aaba4" font-family="DejaVu Sans,sans-serif" font-size="21" font-weight="400" letter-spacing="4">PERPETUAL FUTURES</text>
+</svg>

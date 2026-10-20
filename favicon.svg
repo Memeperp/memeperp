@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">MemePerp mark</title>
+  <desc id="desc">A decisive rising market path forms the letter M over quiet perpetual-market bars.</desc>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M83 294v-54m67 54v-99m67 99v-77m67 77V176" stroke="#263d37" stroke-width="25"/>
+    <path d="m65 298 75-158 67 96 72-133 62 195" stroke="#3DF3C5" stroke-width="25"/>
+    <path d="M279 103h15" stroke="#dff9ef" stroke-width="7"/>
+  </g>
+</svg>

@@ -1,3 +1,2 @@
-# MemePerp
+# memeperptrade
 
-Source repository for MemePerp.

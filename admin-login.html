@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070d10">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Owner access · MemePerp</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/brand/wordmark.css">
+  <link rel="stylesheet" href="/assets/wallet-connections.css">
+  <link rel="stylesheet" href="/assets/admin.css">
+  <script src="/engine/walletSafety.js" defer></script>
+  <script src="/engine/walletConnections.js" defer></script>
+  <script src="/assets/admin-login.js" defer></script>
+</head>
+<body class="admin-page login-page">
+  <main class="login-layout">
+    <section class="login-story" aria-labelledby="login-heading">
+      <header class="admin-topbar">
+        <a class="mp-header-wordmark" href="/home.html" aria-label="MemePerp home">
+          <img class="mp-brand-icon" src="/assets/brand/memeperp-logo.svg" alt="">
+          <span>eme<span class="brand-perp">Perp</span></span>
+        </a>
+        <span class="topbar-label">OWNER CONSOLE <span class="topbar-rule"></span> MAINNET</span>
+      </header>
+      <div class="login-intro">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> PRIVATE OPERATIONS</p>
+        <h1 id="login-heading">A clear view<br>of the <em>whole desk.</em></h1>
+        <p class="login-copy">Activity, system health, and the switch that pauses new risk. Risk exits stay available.</p>
+        <div class="access-note">
+          <span class="access-mark" aria-hidden="true"></span>
+          <div><strong>Owner wallet only</strong><span>Authenticate with a readable message signature. No transaction is requested.</span></div>
+        </div>
+      </div>
+      <footer class="login-footer">
+        <span>MEMEPERP / ADMINISTRATION</span><span>Session tokens stay in this browser tab.</span>
+      </footer>
+    </section>
+
+    <section class="login-card-wrap" aria-label="Wallet authentication">
+      <div class="login-card">
+        <div class="card-index"><span>01</span><span class="index-line"></span><span>SECURE ACCESS</span></div>
+        <div class="login-symbol" aria-hidden="true"><span class="symbol-core"></span><span class="symbol-orbit"></span></div>
+        <h2>Sign in with<br>your Solana wallet</h2>
+        <p class="card-copy">The server checks your wallet against the configured owner address before granting access.</p>
+        <div id="identity-status" class="identity-status" role="status" aria-live="polite">
+          <span class="status-indicator" aria-hidden="true"></span><span>Checking owner configuration…</span>
+        </div>
+        <button class="admin-button primary-button login-action" id="connect-wallet" type="button" disabled>
+          <span>Connect owner wallet</span><span class="button-arrow" aria-hidden="true">→</span>
+        </button>
+        <button class="retry-link" id="retry-identity" type="button" hidden>Retry configuration check</button>
+        <p id="login-message" class="form-message" role="alert" aria-live="assertive"></p>
+        <p class="fine-print">Wallet access uses message signing only.<br><strong>No transactions. No funds transferred.</strong></p>
+      </div>
+      <a class="back-link" href="/home.html"><span aria-hidden="true">←</span> Back to MemePerp</a>
+    </section>
+  </main>
+</body>
+</html>

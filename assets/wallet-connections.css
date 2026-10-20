@@ -1,0 +1,9 @@
+.mp-wallet-picker{width:min(440px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow-y:auto;margin:auto;padding:24px;border:1px solid #355348;border-radius:14px;background:#102024;color:#d4f6d3;font-family:inherit;box-shadow:0 20px 80px #0008}
+.mp-wallet-picker::backdrop{background:#0009}
+.mp-wallet-picker h2{font-size:18px;margin:0 0 12px}
+.mp-wallet-note{font-size:12px;line-height:1.6;color:#adcbc1;margin:12px 0}
+.mp-wallet-options,.mp-wallet-handoff{display:grid;gap:8px}
+.mp-wallet-picker .btn{min-height:44px;white-space:normal;text-align:center;justify-content:center}
+.mp-wallet-link{text-decoration:none}
+.mp-wallet-close{width:100%;margin-top:10px}
+.mp-wallet-picker :focus-visible{outline:2px solid #b1f0be;outline-offset:3px}

@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d0c">
+  <meta name="description" content="Learn about MemePerp's multi-network trading interface, market data, wallet connections, and the difference between its stress-test experience and mainnet plans.">
+  <title>About MemePerp</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="./assets/brand/wordmark.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      color-scheme:dark;
+      --page:#080d0c;
+      --panel:#101715;
+      --panel-raised:#141d19;
+      --panel-soft:#111a16;
+      --line:#26342d;
+      --line-soft:#1b2822;
+      --ink:#e6eee8;
+      --muted:#a0b0a6;
+      --quiet:#728279;
+      --mint:#8ce6bc;
+      --mint-strong:#b3f5d2;
+      --mint-dim:#183a2a;
+      --blue:#a9c7dd;
+      --amber:#e7c78a;
+      --danger:#e69a9b;
+      --display:"Space Grotesk",sans-serif;
+      --body:"Manrope",sans-serif;
+      --mono:"DM Mono",monospace;
+      --sidebar:254px;
+      --rightbar:190px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:92px}
+    body{margin:0;background:
+      radial-gradient(900px 520px at 15% -18%,rgba(64,127,91,.15),transparent 65%),
+      radial-gradient(760px 560px at 94% 8%,rgba(56,105,120,.09),transparent 65%),
+      var(--page);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.75;-webkit-font-smoothing:antialiased}
+    body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.17;background-image:linear-gradient(rgba(200,230,208,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(200,230,208,.025) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 78%)}
+    a{color:var(--mint);text-decoration:none}
+    a:hover{color:var(--mint-strong)}
+    button{font:inherit}
+    .topbar{position:sticky;top:0;z-index:20;height:66px;padding:0 30px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(87,116,98,.24);background:rgba(8,13,12,.9);backdrop-filter:blur(16px)}
+    .brand{display:flex;align-items:center;gap:11px;color:var(--ink);font-family:var(--display);font-weight:700;letter-spacing:.01em}
+    .brand-mark{width:36px;height:36px;display:block;object-fit:contain;flex:none}
+    .brand-name{font-size:15px}
+    .brand-divider{height:19px;width:1px;background:#334139;margin:0 4px}
+    .brand-context{font-family:var(--body);font-size:12px;font-weight:600;color:#a5b4a9;letter-spacing:0}
+    .top-actions{display:flex;align-items:center;gap:12px}
+    .status{display:flex;align-items:center;gap:8px;padding:5px 10px;border:1px solid #2b4c39;background:#12241a;border-radius:99px;color:#a7e7bf;font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+    .status-dot{width:6px;height:6px;border-radius:50%;background:#8ce6bc;box-shadow:0 0 0 3px rgba(140,230,188,.1)}
+    .trade-link{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border:1px solid #375744;border-radius:8px;background:#14261b;color:#c9f2d9;font-size:12px;font-weight:700;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+    .trade-link:hover{transform:translateY(-1px);border-color:#76bd93;background:#1a3324;color:#eafff1}
+    .trade-link svg{width:14px;height:14px}
+    .layout{display:grid;grid-template-columns:var(--sidebar) minmax(0,760px) var(--rightbar);gap:0;max-width:1440px;margin:0 auto;min-height:calc(100dvh - 66px)}
+    .sidebar{position:sticky;top:66px;align-self:start;height:calc(100dvh - 66px);overflow-y:auto;padding:32px 18px 28px 28px;border-right:1px solid var(--line-soft)}
+    .sidebar-label{padding:0 10px;margin:0 0 10px;color:#718176;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+    .nav-group{margin-bottom:23px}
+    .nav-link{display:flex;align-items:center;gap:10px;min-height:34px;padding:6px 10px;border-left:2px solid transparent;border-radius:0 6px 6px 0;color:#a1b0a5;font-size:12px;font-weight:600;line-height:1.4;transition:color .15s ease,background .15s ease,border-color .15s ease}
+    .nav-link:hover{color:#dce9df;background:rgba(144,190,158,.055)}
+    .nav-link.active{color:#aef0c8;background:rgba(87,155,109,.11);border-left-color:#8ce6bc}
+    .nav-index{min-width:18px;color:#65766b;font:10px var(--mono)}
+    .nav-link.active .nav-index{color:#8ce6bc}
+    .sidebar-note{margin:28px 8px 0;padding:13px 12px;border:1px solid #293a30;border-radius:9px;background:linear-gradient(145deg,rgba(20,34,25,.72),rgba(15,24,19,.58));color:#9eafa2;font-size:10px;line-height:1.65}
+    .sidebar-note strong{display:block;color:#c7e5cf;font-size:11px;margin-bottom:3px}
+    .doc{min-width:0;padding:54px 50px 100px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#9ee6bd;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:17px;height:1px;background:#79bd91}
+    h1,h2,h3{font-family:var(--display);letter-spacing:-.035em}
+    h1{max-width:700px;margin:20px 0 15px;font-size:clamp(38px,5.5vw,62px);line-height:1.08;font-weight:600;color:#eff5ef}
+    .intro{max-width:640px;margin:0;color:#b2c0b5;font-size:16px;line-height:1.8}
+    .hero-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:24px;color:#89998e;font:10px var(--mono);letter-spacing:.02em}
+    .hero-meta span{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border:1px solid #25352c;background:rgba(17,27,21,.72);border-radius:6px}
+    .hero-meta i{display:inline-block;width:5px;height:5px;background:#83dba9;border-radius:50%}
+    .hero-rule{height:1px;margin:36px 0 36px;background:linear-gradient(90deg,#405b48,rgba(64,91,72,.32) 64%,transparent)}
+    .notice{position:relative;margin:25px 0 44px;padding:20px 22px 20px 56px;border:1px solid #355441;border-radius:10px;background:linear-gradient(115deg,rgba(24,53,36,.76),rgba(16,31,23,.67));}
+    .notice-icon{position:absolute;left:19px;top:22px;width:23px;height:23px;display:grid;place-items:center;border-radius:7px;background:#274734;color:#afecc4}
+    .notice-icon svg{width:14px;height:14px}
+    .notice-title{margin:0 0 4px;color:#c6efd2;font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:-.01em}
+    .notice p{margin:0;color:#b1c5b6;font-size:12px;line-height:1.75}
+    .notice strong{color:#e1f2e4}
+    .section{padding-top:22px;margin-top:28px;scroll-margin-top:88px}
+    .section-heading{display:flex;align-items:center;gap:11px;margin:0 0 13px}
+    .section-number{display:grid;place-items:center;width:25px;height:25px;border:1px solid #31483a;border-radius:7px;background:#15231a;color:#9bdfb4;font:10px var(--mono)}
+    h2{margin:0;color:#e7efe8;font-size:25px;font-weight:600;line-height:1.3}
+    h3{margin:26px 0 8px;color:#dae7dc;font-size:16px;font-weight:600;letter-spacing:-.02em}
+    p{margin:9px 0 14px;color:#aebbb1;font-size:13px}
+    .lead{color:#c2cec4;font-size:14px}
+    .subtle{color:#849389}
+    .callout{margin:18px 0;padding:14px 16px;border-left:2px solid #789aa9;background:rgba(25,43,45,.42);color:#adbfbc;font-size:12px;line-height:1.75}
+    .callout strong{color:#d2e2df}
+    .callout.amber{border-color:#bd9c62;background:rgba(54,43,26,.35)}
+    .callout.amber strong{color:#f0d6a5}
+    .steps{counter-reset:step;display:grid;gap:0;margin:18px 0 22px}
+    .step{position:relative;display:grid;grid-template-columns:32px 1fr;gap:12px;padding:0 0 19px}
+    .step:not(:last-child)::after{content:"";position:absolute;left:15px;top:31px;bottom:0;width:1px;background:#2b3b31}
+    .step-num{position:relative;z-index:1;display:grid;place-items:center;width:31px;height:31px;border:1px solid #375440;border-radius:10px;background:#14231a;color:#a9e7bd;font:11px var(--mono)}
+    .step-body strong{display:block;margin:1px 0 3px;color:#dce8dd;font-size:13px}
+    .step-body p{margin:0;font-size:12px}
+    .chain-list{display:grid;gap:9px;margin:18px 0 18px}
+    .chain-row{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:13px;padding:13px 14px;border:1px solid #28372e;border-radius:9px;background:linear-gradient(120deg,rgba(20,29,24,.92),rgba(15,23,19,.84))}
+    .chain-badge{display:grid;place-items:center;width:36px;height:36px;border:1px solid #35503e;border-radius:10px;background:#19281e;color:#a9eac0;font:11px var(--mono);font-weight:500}
+    .chain-copy strong{display:block;color:#d9e6db;font-size:12px}
+    .chain-copy span{display:block;margin-top:2px;color:#91a196;font-size:11px;line-height:1.55}
+    .chain-tag{padding:4px 7px;border:1px solid #2d4234;border-radius:5px;color:#a0d7b0;font:9px var(--mono);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+    .table-wrap{overflow-x:auto;margin:16px 0 22px;border:1px solid #2a3930;border-radius:9px;background:rgba(14,21,17,.62)}
+    table{width:100%;border-collapse:collapse;min-width:480px}
+    th,td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid #243229;font-size:11px}
+    th{color:#9fafa3;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;background:rgba(27,39,31,.52)}
+    td{color:#aebcb1}
+    td:first-child{color:#d2dfd4;font-weight:700}
+    tr:last-child td{border-bottom:0}
+    .mono{color:#c7d9cb;font-family:var(--mono);font-size:.94em}
+    .pill{display:inline-block;padding:2px 6px;border:1px solid #355040;border-radius:5px;background:#14241a;color:#ace8bf;font:9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+    .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+    .order-card{padding:15px 16px;border:1px solid #293a30;border-radius:9px;background:linear-gradient(145deg,rgba(19,29,23,.94),rgba(15,22,18,.88))}
+    .order-kicker{margin-bottom:7px;color:#8fcea5;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+    .order-card h3{margin:0 0 5px;font-size:14px}
+    .order-card p{margin:0;font-size:11px;line-height:1.65}
+    .order-card .mono{display:block;margin-top:8px;color:#91aa98;font-size:10px}
+    .definition-list{display:grid;grid-template-columns:118px 1fr;gap:0 14px;margin:15px 0 18px;padding:0}
+    .definition-list dt,.definition-list dd{padding:10px 0;border-bottom:1px solid #202d25;font-size:11px}
+    .definition-list dt{color:#d2dfd4;font-weight:700}
+    .definition-list dd{margin:0;color:#9eaea2}
+    .risk-list{display:grid;gap:8px;margin:16px 0}
+    .risk-item{display:grid;grid-template-columns:8px 1fr;gap:10px;padding:12px 14px;border:1px solid #2b3630;border-radius:8px;background:rgba(18,25,21,.73)}
+    .risk-item::before{content:"";width:6px;height:6px;margin-top:7px;border-radius:50%;background:#d4b16d}
+    .risk-item strong{display:block;color:#d8e1d9;font-size:11px}
+    .risk-item span{display:block;margin-top:2px;color:#9eaba1;font-size:11px;line-height:1.6}
+    .endnote{margin-top:42px;padding:20px;border:1px solid #29372e;border-radius:10px;background:linear-gradient(140deg,rgba(20,31,24,.9),rgba(14,21,17,.9))}
+    .endnote strong{display:block;margin-bottom:5px;color:#d9e7db;font-family:var(--display);font-size:14px}
+    .endnote p{margin:0;font-size:11px}
+    .doc-footer{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-top:44px;padding-top:17px;border-top:1px solid #26342c;color:#748379;font:10px var(--mono)}
+    .doc-footer span{display:inline-flex;align-items:center;gap:8px}
+    .doc-footer img{width:22px;height:22px;object-fit:contain}
+    .doc-footer a{color:#a4c9ae}
+    .rightbar{position:sticky;top:66px;align-self:start;height:calc(100dvh - 66px);padding:55px 22px 24px 20px}
+    .right-title{margin-bottom:11px;color:#75847a;font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+    .right-link{display:block;padding:5px 0;color:#87968b;font-size:10px;line-height:1.5}
+    .right-link:hover{color:#bfebca}
+    .right-link.active{color:#a7e4bb}
+    .back-top{display:inline-flex;gap:6px;align-items:center;margin-top:20px;color:#738279;font:9px var(--mono);text-transform:uppercase;letter-spacing:.05em}
+    .back-top svg{width:12px;height:12px}
+    .mobile-menu{display:none}
+    .skip-link{position:absolute;top:-50px;left:12px;z-index:100;padding:8px 12px;border-radius:6px;background:#d5f5df;color:#102218}
+    .skip-link:focus{top:8px}
+    :focus-visible{outline:2px solid #9de5b6;outline-offset:3px}
+    @media(max-width:1150px){:root{--sidebar:226px;--rightbar:0px}.layout{grid-template-columns:var(--sidebar) minmax(0,760px);justify-content:center}.rightbar{display:none}.doc{padding-left:42px;padding-right:42px}}
+    @media(max-width:760px){
+      .topbar{height:58px;padding:0 17px}.brand-context,.brand-divider{display:none}.status{font-size:9px;padding:5px 8px}.trade-link{padding:7px 10px;font-size:11px}.trade-link span{display:none}
+      .layout{display:block;min-height:calc(100dvh - 58px)}
+      .sidebar{position:relative;top:auto;height:auto;overflow:visible;padding:0 16px;border-right:0;border-bottom:1px solid var(--line-soft);background:rgba(10,15,12,.62)}
+      .mobile-menu{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 0;border:0;background:none;color:#b7c6ba;text-align:left;font-size:11px;font-weight:700;cursor:pointer}
+      .mobile-menu span{display:flex;align-items:center;gap:8px}
+      .mobile-menu svg{width:15px;height:15px;color:#9cdeb1;transition:transform .2s}
+      .mobile-menu[aria-expanded="true"] svg{transform:rotate(180deg)}
+      .sidebar-inner{display:none;padding:0 0 12px}.sidebar.open .sidebar-inner{display:block}.nav-group{margin-bottom:14px}.sidebar-label{margin-top:9px}.sidebar-note{display:none}
+      .doc{padding:34px 22px 64px}h1{font-size:42px}.intro{font-size:14px}.hero-rule{margin:27px 0}.notice{margin-bottom:32px;padding:17px 17px 17px 49px}.notice-icon{left:14px;top:19px}
+      .section{padding-top:13px;margin-top:18px}h2{font-size:22px}.chain-row{grid-template-columns:35px minmax(0,1fr);gap:10px}.chain-tag{grid-column:2;justify-self:start;margin-top:-2px}.order-grid{grid-template-columns:1fr}.definition-list{grid-template-columns:95px 1fr}
+      .doc-footer{align-items:flex-start;flex-direction:column}
+    }
+    @media(max-width:420px){.top-actions{gap:7px}.brand-name{font-size:14px}.doc{padding-left:17px;padding-right:17px}h1{font-size:37px}.hero-meta span{font-size:9px}.definition-list{grid-template-columns:1fr;gap:0}.definition-list dt{padding-bottom:0;border-bottom:0}.definition-list dd{padding-top:2px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to documentation</a>
+  <header class="topbar">
+    <a class="brand" href="./home.html" aria-label="MemePerp home">
+      <span class="brand-name mp-brand" role="img" aria-label="MemePerp"><img class="mp-brand-icon" src="./assets/brand/memeperp-logo.svg" alt="" aria-hidden="true"><span aria-hidden="true">emePerp</span></span>
+      <span class="brand-divider"></span>
+      <span class="brand-context">About</span>
+    </a>
+    <div class="top-actions">
+      <a class="trade-link" href="./testnet.html" aria-label="Open the MemePerp stress-test terminal">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Open terminal</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <button class="mobile-menu" id="mobileMenu" aria-expanded="false" aria-controls="sidebarInner">
+        <span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Contents</span>
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="sidebar-inner" id="sidebarInner">
+        <div class="nav-group">
+          <a class="nav-link active" href="#overview"><span class="nav-index">01</span>Overview</a>
+          <a class="nav-link" href="#how-it-works"><span class="nav-index">02</span>Technology &amp; trading flow</a>
+          <a class="nav-link" href="#networks"><span class="nav-index">03</span>Supported networks</a>
+          <a class="nav-link" href="#testnet"><span class="nav-index">04</span>Stress test &amp; mainnet</a>
+          <a class="nav-link" href="#wallets"><span class="nav-index">05</span>Wallets &amp; signatures</a>
+        </div>
+        <div class="nav-group">
+          <a class="nav-link" href="#balances"><span class="nav-index">06</span>Test balances</a>
+          <a class="nav-link" href="#orders"><span class="nav-index">07</span>Orders &amp; triggers</a>
+          <a class="nav-link" href="#positions"><span class="nav-index">08</span>Positions &amp; margin</a>
+          <a class="nav-link" href="#managing"><span class="nav-index">09</span>Manage a position</a>
+          <a class="nav-link" href="#markets"><span class="nav-index">10</span>Markets &amp; pricing</a>
+        </div>
+        <div class="nav-group">
+          <a class="nav-link" href="#risks"><span class="nav-index">11</span>Risks &amp; limitations</a>
+          <a class="nav-link" href="#faq"><span class="nav-index">12</span>Quick answers</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="doc" id="main">
+      <div class="eyebrow">MemePerp / About</div>
+      <section id="overview" aria-labelledby="page-title">
+        <h1 id="page-title">The markets move fast.<br>Know your position.</h1>
+        <p class="intro">MemePerp brings token discovery, market information and perpetual-style trading tools into one multi-network interface. Choose a market, take a long or short view, and follow positions, orders and P&amp;L in one place.</p>
+        <div class="hero-meta">
+          <span><i></i> Multi-network interface</span>
+          <span>Live market data</span>
+        </div>
+      </section>
+      <div class="hero-rule"></div>
+
+      <section class="section" id="how-it-works">
+        <div class="section-heading"><span class="section-number">02</span><h2>Technology &amp; trading flow</h2></div>
+        <p class="lead">MemePerp connects a chain-aware market interface to external quote sources, wallet identity and trading controls. The interface brings those pieces together; the current stress-test simulator records trading outcomes in practice accounts.</p>
+        <div class="steps">
+          <div class="step"><span class="step-num">01</span><div class="step-body"><strong>Market discovery</strong><p>Search token markets on the selected network. External data providers supply prices and market details; quote availability and eligibility checks determine which markets can be used.</p></div></div>
+          <div class="step"><span class="step-num">02</span><div class="step-body"><strong>Wallet-aware accounts</strong><p>A compatible wallet identifies the account and network. In the EVM stress-test flow, a signed message proves account control and a separate message confirms each account-changing action.</p></div></div>
+          <div class="step"><span class="step-num">03</span><div class="step-body"><strong>Position controls</strong><p>Set a side, margin, leverage and order type, then monitor open positions, pending orders and P&amp;L. The stress-test engine applies its own margin, fee, trigger and liquidation calculations.</p></div></div>
+          <div class="step"><span class="step-num">04</span><div class="step-body"><strong>Account history</strong><p>The terminal shows balances, positions and activity for the selected account. Stress-test results are simulated and do not prove that a live venue could offer the same fill or price.</p></div></div>
+        </div>
+      </section>
+
+      <section class="section" id="networks">
+        <div class="section-heading"><span class="section-number">03</span><h2>Supported networks</h2></div>
+        <p>MemePerp has network-specific market views for Solana, Robinhood Chain and BNB Smart Chain. Network selection affects the wallet context, market-data lookup and, in the current stress-test experience, the account and collateral denomination.</p>
+        <div class="chain-list">
+          <div class="chain-row"><span class="chain-badge">SOL</span><div class="chain-copy"><strong>Solana</strong><span>The Solana testnet path uses SOL-denominated test balances and Solana-compatible wallet flows. It is distinct from the EVM simulator described below.</span></div><span class="chain-tag">Solana testnet</span></div>
+          <div class="chain-row"><span class="chain-badge">RH</span><div class="chain-copy"><strong>Robinhood Chain</strong><span>EVM simulation account with ETH-denominated practice collateral. For the ETH/USD reference market, the app uses an Ethereum WETH/USD quote—not a fabricated Robinhood Chain token pair.</span></div><span class="chain-tag">EVM · simulated</span></div>
+          <div class="chain-row"><span class="chain-badge">BNB</span><div class="chain-copy"><strong>BNB Smart Chain</strong><span>EVM simulation account with BNB-denominated practice collateral. Market lookups are scoped to BNB Smart Chain token pairs.</span></div><span class="chain-tag">EVM · simulated</span></div>
+        </div>
+        <p class="subtle">Balances and positions on one EVM network are not shared with the other network. Collateral conversion to a displayed USD value uses a live reference quote and can change.</p>
+      </section>
+
+      <section class="section" id="testnet">
+        <div class="section-heading"><span class="section-number">04</span><h2>Stress test &amp; mainnet: what changes?</h2></div>
+        <p class="lead">The main difference is whether a trade is only a practice-account result or an actual order involving real assets. Here is what MemePerp offers now versus what a live mainnet product would require.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Area</th><th>Stress test available now</th><th>Mainnet</th></tr></thead>
+            <tbody>
+              <tr><td>Availability</td><td>Interactive trading terminal.</td><td>Preview and early-access signup only; live trading is not enabled.</td></tr>
+              <tr><td>Balance &amp; settlement</td><td>Solana testnet balance or EVM practice credits. Simulated positions cannot be redeemed as real assets.</td><td>Real funds and settlement would require a separate, live trading implementation. Do not deposit funds for the stress test.</td></tr>
+              <tr><td>Wallet approval</td><td>EVM actions use signed messages to authorize simulator changes, not on-chain order transactions. Solana uses its separate testnet flow.</td><td>Any future real-funds flow would require its own wallet, network and transaction disclosures before launch.</td></tr>
+              <tr><td>Prices &amp; outcomes</td><td>External market data informs simulated fills, P&amp;L and triggers; they are estimates, not exchange executions.</td><td>A live venue would have actual execution, fees and market risks. No live fills are available here today.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>For the current stress test: choose a network and connect a compatible wallet, add test balance where needed, and explore orders and positions. EVM accounts are separate for each network and address; the Solana flow uses different testnet tooling. Read the details below before approving a wallet prompt.</p>
+      </section>
+
+      <section class="section" id="wallets">
+        <div class="section-heading"><span class="section-number">05</span><h2>Wallets &amp; signatures</h2></div>
+        <p>Connecting identifies the account you want to practice with. It does not mean the simulator has custody of your assets. On EVM networks, the interface uses signed messages for sign-in and for confirming actions that change the simulated ledger.</p>
+        <h3>What you may be asked to sign</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Prompt</th><th>Purpose in the EVM simulator</th></tr></thead>
+            <tbody>
+              <tr><td>Sign-in message</td><td>Proves control of the connected address for a temporary application session. The message explicitly states that no transaction or funds will be transferred.</td></tr>
+              <tr><td>Action confirmation</td><td>Confirms the particular simulated action and its details, such as order side, margin, leverage, order type, or position-management request.</td></tr>
+              <tr><td>Blockchain transaction</td><td>EVM simulated orders do not require an on-chain transaction. If a wallet presents an unexpected transaction prompt, stop and inspect it rather than assuming it is part of an EVM simulator order.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Message signing does not move tokens, but always read wallet prompts before approving them. EVM sign-in sessions are temporary; reconnect and sign in again if a session has expired. The Solana testnet uses a separate wallet path and may show testnet-specific prompts.</p>
+      </section>
+
+      <section class="section" id="balances">
+        <div class="section-heading"><span class="section-number">06</span><h2>Test balances</h2></div>
+        <h3>EVM practice credits</h3>
+        <p>On Robinhood Chain and BNB Smart Chain, “Add test balance” credits a server-side simulated ledger in ETH or BNB units. The amount is converted using the current collateral quote. <strong>No ETH or BNB is deposited, withdrawn, bridged, or transferred by this EVM balance action.</strong></p>
+        <p>The EVM simulator currently accepts additions worth $1–$1,000 per request, with a maximum of $1,000 in test balance per six-hour window on each selected chain. These are app limits, not wallet funding instructions.</p>
+        <h3>Solana test balance</h3>
+        <p>The Solana tab is a separate testnet flow and displays SOL-denominated test balance. Its “Add test balance” action requests test SOL through the Solana testnet path; testnet tokens are not mainnet SOL and have no intended monetary value. Confirm which network your wallet is using before continuing.</p>
+        <div class="callout amber"><strong>Displayed USD values are estimates.</strong> The application converts the simulated native-unit balance using an external ETH or BNB price quote. Quote availability, rounding, and market movement can affect the displayed figure.</div>
+      </section>
+
+      <section class="section" id="orders">
+        <div class="section-heading"><span class="section-number">07</span><h2>Orders &amp; triggers</h2></div>
+        <p>Perpetual positions let you practice taking a long or short view with simulated leverage. An order is a request interpreted by the simulator—not an instruction submitted to a real exchange.</p>
+        <div class="order-grid">
+          <article class="order-card"><div class="order-kicker">Immediate quote</div><h3>Market</h3><p>Requests a simulated opening using the latest available market quote. The quote may change or fail to load; this is not guaranteed execution at the displayed price.</p><span class="mono">EVM: market open action</span></article>
+          <article class="order-card"><div class="order-kicker">Wait for a level</div><h3>Limit</h3><p>A pending EVM order checks its trigger against fetched market data. A long limit is eligible at or below its trigger; a short limit at or above it.</p><span class="mono">EVM: long ≤ trigger · short ≥ trigger</span></article>
+          <article class="order-card"><div class="order-kicker">Wait for a move</div><h3>Stop</h3><p>Available for EVM pending orders. A long stop is eligible at or above its trigger; a short stop at or below it. A trigger is not a promise of a fill at that price.</p><span class="mono">EVM: long ≥ trigger · short ≤ trigger</span></article>
+        </div>
+        <p>To leave a limit order pending, its price must be below the current quote for a long or above it for a short. The app rejects a limit that could fill immediately; use Market if you want to open now. Pending EVM orders reserve simulated margin and an estimated opening fee. They may be cancelled while pending; cancellation releases the reserved ledger amount. Orders expire after seven days. Automatic checks run periodically, and an unavailable or ineligible quote will not trigger a simulated fill.</p>
+        <p>The Solana interface has its own order implementation. Do not assume EVM order rules, limits, or trigger timing apply identically to the Solana path.</p>
+      </section>
+
+      <section class="section" id="positions">
+        <div class="section-heading"><span class="section-number">08</span><h2>Positions &amp; margin</h2></div>
+        <p>A position view can show side, entry and mark prices, margin, leverage, unrealized P&amp;L, and a liquidation estimate. For EVM accounts these are simulator calculations over external quotes and a simulated ledger; they are not a broker statement or on-chain position.</p>
+        <dl class="definition-list">
+          <dt>Isolated</dt><dd>In the EVM simulator, the position’s own practice margin is used in its margin calculation. A simulated loss is bounded by the posted margin in the ledger’s isolated-close calculation.</dd>
+          <dt>Cross</dt><dd>The EVM simulator can include that chain-and-wallet account’s available practice balance and other cross-position equity in its simulated cushion. It does not draw funds from another wallet or network.</dd>
+          <dt>Leverage</dt><dd>Magnifies the simulated notional exposure relative to margin and also magnifies the effect of price changes on ROI. EVM position and order endpoints currently allow 1×–20×.</dd>
+          <dt>Liquidation</dt><dd>A modelled threshold based on maintenance margin and the latest available quote. It is an approximation, not a real liquidation process or a guaranteed warning price.</dd>
+        </dl>
+        <p>EVM simulated accounts currently allow up to ten open positions and pending orders combined. The app can reject a second position or pending order for the same token until the existing one is closed or cancelled.</p>
+      </section>
+
+      <section class="section" id="managing">
+        <div class="section-heading"><span class="section-number">09</span><h2>Manage a position</h2></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Action</th><th>What it does in the EVM simulation</th><th>Keep in mind</th></tr></thead>
+            <tbody>
+              <tr><td>Reduce</td><td>Requests a partial reduction of an open simulated position.</td><td>Confirmation is required; the current quote is used for the simulated action.</td></tr>
+              <tr><td>Take profit</td><td>Sets an ROI threshold intended to close the simulated position when reached.</td><td>Threshold checks depend on fresh market data and periodic processing; no fill price is guaranteed.</td></tr>
+              <tr><td>Stop loss</td><td>Sets a negative ROI threshold intended to close the simulated position when reached.</td><td>A stop setting cannot cap losses at an exact price in fast markets or during quote gaps.</td></tr>
+              <tr><td>Close</td><td>Requests a full simulated close using the latest available live market quote.</td><td>It does not send a transaction or guarantee the displayed quote remains current.</td></tr>
+              <tr><td>Cancel order</td><td>Cancels an eligible pending simulated order and returns reserved practice balance to the ledger.</td><td>Filled, expired, or already-cancelled orders cannot be cancelled as pending.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>On the EVM simulator, TP/SL values are expressed as ROI thresholds. The backend accepts take-profit ROI above zero up to 1,000% and stop-loss ROI below zero down to −100%. These settings are monitoring rules, not guaranteed execution or protection.</p>
+      </section>
+
+      <section class="section" id="markets">
+        <div class="section-heading"><span class="section-number">10</span><h2>Markets &amp; pricing</h2></div>
+        <p>Market discovery and quotes are provided by external market-data services, not generated by an order book operated by MemePerp. The EVM market lookup selects a token pair on the chosen chain and applies basic eligibility checks.</p>
+        <div class="callout"><strong>EVM market eligibility:</strong> token markets currently need at least $50,000 in reported liquidity and $100,000 in reported market capitalization to be used. Robinhood Chain’s ETH reference is an exception: it uses an Ethereum WETH/USD reference quote because the product does not use a fabricated Robinhood ETH pair.</div>
+        <p>Token pair quotes can be missing, stale, inconsistent, or temporarily unavailable. EVM collateral quotes are also external and required for converting ETH or BNB collateral to USD. When a quote cannot be obtained, the app may decline an action, show incomplete values, or skip an automatic check rather than fill using a made-up quote.</p>
+      </section>
+
+      <section class="section" id="risks">
+        <div class="section-heading"><span class="section-number">11</span><h2>Risks &amp; limitations</h2></div>
+        <p>Perpetuals and leverage are high risk even when exploring the mechanics in a simulator. Practice outcomes cannot reproduce every market or operational condition.</p>
+        <div class="risk-list">
+          <div class="risk-item"><div><strong>Leverage magnifies losses</strong><span>A small price move against a leveraged position can materially reduce its simulated equity and may reach the modelled liquidation threshold.</span></div></div>
+          <div class="risk-item"><div><strong>Quotes are not execution prices</strong><span>External prices can lag, gap, or differ from prices available elsewhere. The simulator does not guarantee a fill, price, or execution time.</span></div></div>
+          <div class="risk-item"><div><strong>Automation depends on availability</strong><span>Pending orders and TP/SL checks need usable market and collateral quotes. Delays, provider outages, or an ineligible market can prevent an expected trigger.</span></div></div>
+          <div class="risk-item"><div><strong>Simulations omit real-world market mechanics</strong><span>Displayed results do not establish real liquidity, funding conditions, slippage, counterparty access, or the ability to trade a token in a live venue.</span></div></div>
+          <div class="risk-item"><div><strong>Test credits are not assets</strong><span>EVM practice balances are application ledger entries. They are not redeemable, withdrawable, transferable, or claims on ETH, BNB, or another asset.</span></div></div>
+          <div class="risk-item"><div><strong>Not a security or audit claim</strong><span>This guide makes no claim that the application, wallet integrations, data sources, or any smart contract have been independently audited or are risk-free.</span></div></div>
+        </div>
+        <div class="callout amber"><strong>Use the simulator to learn the interface—not to decide that a live strategy is safe.</strong> Nothing on this page is investment, legal, or tax advice. Never sign a wallet request you do not understand.</div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="section-heading"><span class="section-number">12</span><h2>Quick answers</h2></div>
+        <h3>Will an EVM practice order move funds from my wallet?</h3>
+        <p>No. Robinhood Chain and BNB Smart Chain stress-test actions operate on a simulated account ledger. Wallet message signatures confirm sign-in or the specific requested action; the simulator does not transfer wallet funds for these orders or balance credits.</p>
+        <h3>Why does the wallet ask me to sign?</h3>
+        <p>The signature associates you with the selected account or confirms the details of a simulated action. EVM prompts are signed messages, not order transactions. Review the text in the wallet before signing; reject unexpected prompts.</p>
+        <h3>Does a trigger guarantee a fill?</h3>
+        <p>No. A trigger is evaluated against available quote data. Market movement, price-source delays, eligibility checks, or service availability can affect whether and when the simulator processes it.</p>
+        <h3>Can I withdraw or redeem a test balance?</h3>
+        <p>No. EVM test balances exist only in the simulated ledger and cannot be withdrawn, redeemed, or transferred. Solana test balances are test tokens on Solana Testnet, not mainnet assets.</p>
+        <h3>Is this mainnet trading?</h3>
+        <p>MemePerp’s current trading experience is a stress-test simulator designed to help us prepare for a high inflow of users and deliver a smooth experience. Access to liquidity-backed mainnet trading will be released in batches. <a href="./index.html">Sign up for early beta access</a>.</p>
+      </section>
+
+      <footer class="doc-footer mp-site-footer">
+        <span class="mp-copyright"><span class="mp-brand" role="img" aria-label="MemePerp"><img class="mp-brand-icon" src="./assets/brand/memeperp-logo.svg" alt="" aria-hidden="true"/><span aria-hidden="true">emePerp</span></span><span>© 2026</span></span>
+        <a href="./testnet.html">Go to the stress-test terminal →</a>
+      </footer>
+    </main>
+
+    <aside class="rightbar" aria-label="On this page">
+      <div class="right-title">On this page</div>
+      <a class="right-link active" href="#overview">Overview</a>
+      <a class="right-link" href="#how-it-works">Technology &amp; trading flow</a>
+      <a class="right-link" href="#networks">Supported networks</a>
+      <a class="right-link" href="#testnet">Stress test &amp; mainnet</a>
+      <a class="right-link" href="#wallets">Wallets &amp; signatures</a>
+      <a class="right-link" href="#balances">Test balances</a>
+      <a class="right-link" href="#orders">Orders &amp; triggers</a>
+      <a class="right-link" href="#positions">Positions &amp; margin</a>
+      <a class="right-link" href="#managing">Manage a position</a>
+      <a class="right-link" href="#markets">Markets &amp; pricing</a>
+      <a class="right-link" href="#risks">Risks &amp; limitations</a>
+      <a class="right-link" href="#faq">Quick answers</a>
+      <a class="back-top" href="#overview"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 13V3m0 0L4 7m4-4 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to top</a>
+    </aside>
+  </div>
+  <script>
+    (() => {
+      const menu = document.getElementById('mobileMenu');
+      const sidebar = document.getElementById('sidebar');
+      menu.addEventListener('click', () => {
+        const expanded = menu.getAttribute('aria-expanded') === 'true';
+        menu.setAttribute('aria-expanded', String(!expanded));
+        sidebar.classList.toggle('open', !expanded);
+      });
+
+      const sections = [...document.querySelectorAll('main .section, #overview')];
+      const links = [...document.querySelectorAll('.nav-link, .right-link')];
+      const setActive = id => {
+        links.forEach(link => {
+          const active = link.getAttribute('href') === `#${id}`;
+          link.classList.toggle('active', active);
+          if (active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      };
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible) setActive(visible.target.id);
+        }, { rootMargin: '-18% 0px -68% 0px', threshold: [0, .15, .4] });
+        sections.forEach(section => observer.observe(section));
+      }
+      links.forEach(link => link.addEventListener('click', () => {
+        const id = link.getAttribute('href').slice(1);
+        setActive(id);
+        if (window.matchMedia('(max-width: 760px)').matches) {
+          sidebar.classList.remove('open');
+          menu.setAttribute('aria-expanded', 'false');
+        }
+      }));
+    })();
+  </script>
+<script src="./assets/site-telemetry.js" defer></script>
+</body>
+</html>

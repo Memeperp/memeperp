@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070d10">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Owner console · MemePerp</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/brand/wordmark.css">
+  <link rel="stylesheet" href="/assets/admin.css">
+  <script src="/assets/admin.js" defer></script>
+</head>
+<body class="admin-page dashboard-page">
+  <div id="dashboard-shell" class="dashboard-shell">
+    <aside class="sidebar" aria-label="Administration">
+      <a class="mp-header-wordmark sidebar-brand" href="/home.html" aria-label="MemePerp home">
+        <img class="mp-brand-icon" src="/assets/brand/memeperp-logo.svg" alt="">
+        <span>eme<span class="brand-perp">Perp</span></span>
+      </a>
+      <div class="sidebar-caption">OWNER CONSOLE</div>
+      <nav class="side-nav" aria-label="Dashboard sections">
+        <a class="side-link active" href="#overview" aria-current="page"><span class="side-glyph glyph-overview" aria-hidden="true"></span>Overview</a>
+        <a class="side-link" href="#accounts"><span class="side-glyph glyph-accounts" aria-hidden="true"></span>Accounts</a>
+        <a class="side-link" href="#positions"><span class="side-glyph glyph-risk" aria-hidden="true"></span>Open risk</a>
+        <a class="side-link" href="#activity"><span class="side-glyph glyph-activity" aria-hidden="true"></span>Activity</a>
+        <a class="side-link" href="#signups"><span class="side-glyph glyph-accounts" aria-hidden="true"></span>Signups</a>
+        <a class="side-link" href="#feedback"><span class="side-glyph glyph-activity" aria-hidden="true"></span>Feedback</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-assurance"><span class="assurance-mark" aria-hidden="true"></span><span>Exits remain available<br>when new trading is paused.</span></div>
+        <a class="side-link side-public-link" href="/home.html">← Public site</a>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="dashboard-topbar">
+        <div><span class="topbar-kicker">MEMEPERP <span>/</span> OWNER OPERATIONS</span><div class="mobile-brand">Owner console</div></div>
+        <div class="topbar-actions">
+          <div class="refresh-status"><span class="live-dot" aria-hidden="true"></span><span id="refresh-label">Connecting securely</span></div>
+          <button class="icon-button" id="refresh-button" type="button" aria-label="Refresh dashboard" title="Refresh dashboard"><span aria-hidden="true">↻</span></button>
+          <button class="admin-button quiet-button logout-button" id="logout-button" type="button">Sign out</button>
+        </div>
+      </header>
+
+      <div class="dashboard-content" id="dashboard-content" aria-hidden="true">
+        <div id="dashboard-alert" class="dashboard-alert" role="alert" hidden></div>
+        <section class="migration-warning" id="migration-warning" aria-labelledby="migration-title" hidden>
+          <div class="migration-icon" aria-hidden="true"><span></span></div>
+          <div class="migration-body">
+            <p class="eyebrow">PRODUCTION DATA MIGRATION REQUIRED</p>
+            <h2 id="migration-title">Previous published records are not imported.</h2>
+            <p>This production store has not received its verified backup. Until import completes, empty ledger counts and lists are <strong>not historical totals</strong>. Trading and backup export remain unavailable in this state.</p>
+            <div class="migration-actions">
+              <button class="admin-button migration-upload-button" id="choose-backup" type="button">Choose verified backup JSON <span aria-hidden="true">↑</span></button>
+              <button class="admin-button review-import-button" id="review-import" type="button" hidden>Review import</button>
+              <input id="backup-file" class="backup-file-input" type="file" accept="application/json,.json" hidden>
+              <span class="migration-file" id="migration-file">No backup selected</span>
+            </div>
+            <p class="migration-status" id="migration-status" role="status" aria-live="polite"></p>
+          </div>
+        </section>
+        <section class="overview-intro" id="overview" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span> SYSTEM OVERVIEW</p>
+            <h1 id="page-title">The desk, <em>at a glance.</em></h1>
+            <p class="intro-subtitle">A live operational snapshot across supported chains.</p>
+          </div>
+          <div class="snapshot-meta"><span class="snapshot-label">SNAPSHOT UPDATED</span><time id="generated-at">—</time><span>Refreshes every 15 seconds while this tab is visible</span></div>
+        </section>
+
+        <section class="trading-panel" aria-labelledby="trading-title">
+          <div class="trading-copy">
+            <div class="trading-kicker"><span class="trade-state-mark" id="trading-mark" aria-hidden="true"></span> TRADING CONTROL</div>
+            <h2 id="trading-title">New positions are <span id="trading-state-text">—</span></h2>
+            <p id="trading-description">Loading current server setting…</p>
+            <p class="trading-updated" id="trading-updated"></p>
+          </div>
+          <button class="admin-button trading-toggle" id="trading-toggle" type="button" disabled aria-describedby="trading-description">
+            <span id="trading-button-text">Loading state</span><span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+        </section>
+
+        <section class="metrics-section" aria-labelledby="metrics-heading">
+          <div class="section-heading"><div><p class="eyebrow">ACTIVITY / NOW</p><h2 id="metrics-heading">A pulse, not a chart.</h2></div><p>Anonymous visitor counts reflect visible-page heartbeats within 60 seconds. Historical tracking begins when this update was published.</p></div>
+          <div class="metric-grid" id="metric-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="system-strip" aria-label="Storage and provider health">
+          <div class="system-header"><div><p class="eyebrow">INFRASTRUCTURE</p><h2>System condition</h2></div><button class="admin-button export-button" id="export-button" type="button"><span aria-hidden="true">↓</span> Export backup</button></div>
+          <div class="system-grid" id="system-grid"></div>
+          <p class="system-footnote">Backup contains the Solana ledger, EVM accounts, and settings. It never contains session tokens.</p>
+        </section>
+
+        <section class="data-section" id="accounts" aria-labelledby="accounts-heading">
+          <div class="section-heading compact-heading"><div><p class="eyebrow">LEDGER / ACCOUNTS</p><h2 id="accounts-heading">Accounts</h2></div><span class="section-count" id="account-count">—</span></div>
+          <div class="table-wrap"><table><thead><tr><th>Wallet</th><th>Chain</th><th>Balance</th><th>Positions</th><th>Orders</th><th>Realized P&amp;L</th></tr></thead><tbody id="accounts-body"></tbody></table></div>
+          <div class="mobile-record-list" id="accounts-mobile"></div>
+        </section>
+
+        <section class="data-section" id="positions" aria-labelledby="positions-heading">
+          <div class="section-heading compact-heading"><div><p class="eyebrow">RISK / OPEN</p><h2 id="positions-heading">Open positions</h2></div><span class="section-count" id="position-count">—</span></div>
+          <div class="table-wrap"><table><thead><tr><th>Market</th><th>Wallet</th><th>Chain</th><th>Side</th><th>Margin</th><th>Leverage</th><th>Entry</th><th>Quantity</th></tr></thead><tbody id="positions-body"></tbody></table></div>
+          <div class="mobile-record-list" id="positions-mobile"></div>
+        </section>
+
+        <section class="split-data">
+          <section class="data-section" aria-labelledby="orders-heading">
+            <div class="section-heading compact-heading"><div><p class="eyebrow">QUEUE</p><h2 id="orders-heading">Pending orders</h2></div><span class="section-count" id="order-count">—</span></div>
+            <div class="table-wrap"><table><thead><tr><th>Market</th><th>Side</th><th>Limit price</th><th>Margin</th></tr></thead><tbody id="orders-body"></tbody></table></div>
+            <div class="mobile-record-list" id="orders-mobile"></div>
+          </section>
+          <section class="data-section" aria-labelledby="markets-heading">
+            <div class="section-heading compact-heading"><div><p class="eyebrow">REFERENCE</p><h2 id="markets-heading">Markets</h2></div><span class="section-count" id="market-count">—</span></div>
+            <div class="table-wrap"><table><thead><tr><th>Market</th><th>Reference price</th><th>Updated</th></tr></thead><tbody id="markets-body"></tbody></table></div>
+            <div class="mobile-record-list" id="markets-mobile"></div>
+          </section>
+        </section>
+
+        <section class="split-data lower-data">
+          <section class="data-section" id="activity" aria-labelledby="activity-heading">
+            <div class="section-heading compact-heading"><div><p class="eyebrow">RECENT EVENTS</p><h2 id="activity-heading">Activity</h2></div><span class="section-count" id="activity-count">—</span></div>
+            <div class="activity-list" id="activity-list"></div>
+          </section>
+          <section class="data-section" id="signups" aria-labelledby="signups-heading">
+            <div class="section-heading compact-heading"><div><p class="eyebrow">COMMUNITY</p><h2 id="signups-heading">Signups</h2></div><span class="section-count" id="signup-count">—</span></div>
+            <div class="signup-list" id="signup-list"></div>
+          </section>
+        </section>
+
+        <section class="data-section" id="feedback" aria-labelledby="feedback-heading">
+          <div class="section-heading compact-heading"><div><p class="eyebrow">COMMUNITY / INPUT</p><h2 id="feedback-heading">Feedback</h2></div><span class="section-count" id="feedback-count">—</span></div>
+          <div class="feedback-list" id="feedback-list" aria-live="polite"></div>
+        </section>
+
+        <footer class="dashboard-footer"><span>MEMEPERP OWNER CONSOLE</span><span id="footer-storage">Status checks are server-reported.</span><a href="/home.html">Return to public site ↗</a></footer>
+      </div>
+      <div class="dashboard-loading" id="dashboard-loading" role="status" aria-live="polite">
+        <span class="loading-emblem" aria-hidden="true"></span><strong>Verifying owner session</strong><span>Private dashboard data is not displayed until authorization succeeds.</span>
+        <button class="admin-button quiet-button loading-retry" id="retry-overview" type="button" hidden>Retry connection</button>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="confirm-dialog" id="trading-dialog" aria-labelledby="confirm-title">
+    <form method="dialog" class="confirm-content">
+      <p class="eyebrow">CONFIRM SERVER SETTING</p><h2 id="confirm-title">Pause new trading?</h2>
+      <p id="confirm-copy">New positions, increases, limit orders, and automatic limit fills will stop across all three chains.</p>
+      <div class="risk-preservation"><span class="preserve-mark" aria-hidden="true">+</span><span>Existing positions can still be closed or reduced. Orders can still be cancelled. Risk exits remain active.</span></div>
+      <div class="dialog-actions"><button class="admin-button quiet-button" value="cancel" type="submit">Keep current setting</button><button class="admin-button danger-button" id="confirm-trading" value="confirm" type="button">Pause new trading</button></div>
+    </form>
+  </dialog>
+  <dialog class="confirm-dialog import-dialog" id="import-dialog" aria-labelledby="import-title">
+    <form method="dialog" class="confirm-content import-content">
+      <p class="eyebrow">PRODUCTION BOOTSTRAP</p>
+      <h2 id="import-title">Import verified backup?</h2>
+      <p id="import-file-summary">The selected JSON will be validated by the server and imported only if this account database is still empty.</p>
+      <div class="risk-preservation import-safety"><span class="preserve-mark" aria-hidden="true">!</span><span>Import cannot overwrite existing accounts. Trading starts paused after import. This action will not happen until you confirm below.</span></div>
+      <label class="confirmation-label" for="import-confirmation">Type <strong>IMPORT VERIFIED PRODUCTION BACKUP</strong> to continue.</label>
+      <input class="confirmation-input" id="import-confirmation" type="text" autocomplete="off" spellcheck="false" aria-describedby="import-confirmation-help">
+      <span class="confirmation-help" id="import-confirmation-help">Exact match required. No import occurs automatically.</span>
+      <div class="dialog-actions"><button class="admin-button quiet-button" value="cancel" type="submit">Cancel</button><button class="admin-button danger-button" id="confirm-import" value="confirm" type="button" disabled>Import backup</button></div>
+    </form>
+  </dialog>
+</body>
+</html>

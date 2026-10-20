@@ -1,0 +1,102 @@
+/* The approved logo replaces the initial M without changing the surrounding type. */
+.mp-brand {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: baseline;
+  white-space: nowrap;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+.mp-brand.mp-brand {
+  gap: 0;
+}
+
+.mp-brand > .mp-brand-icon {
+  display: inline-block;
+  flex: none;
+  width: 1.25em;
+  height: 1.5em;
+  margin: -.25em -.16em;
+  object-fit: contain;
+}
+
+/* Header wordmarks use the landing page's typography and green Perp. */
+.mp-header-wordmark.mp-header-wordmark {
+  font: 800 23px/1 "Sora", sans-serif;
+  letter-spacing: -.045em;
+  color: #edf8f2;
+  -webkit-text-fill-color: currentColor;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.mp-header-wordmark .mp-brand-icon {
+  display: inline-block;
+  flex: none;
+  width: 1.55em;
+  height: 1.65em;
+  margin: -.26em -.15em;
+  object-fit: contain;
+}
+
+.mp-header-wordmark .brand-perp {
+  color: #b5ee90;
+  -webkit-text-fill-color: currentColor;
+}
+
+@media (max-width: 600px) {
+  .mp-header-wordmark.mp-header-wordmark {
+    font-size: 16px;
+  }
+}
+
+/* A compact, consistent legal mark shared by every public page. */
+.mp-site-footer.mp-site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  min-height: 52px;
+  margin-top: 24px;
+  padding: 17px 0;
+  border-top: 1px solid rgba(151, 228, 192, .15);
+  color: #95ada2;
+  font: 500 11px/1.4 "Space Grotesk", system-ui, sans-serif;
+  letter-spacing: .025em;
+}
+
+.mp-site-footer .mp-copyright {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  white-space: nowrap;
+}
+
+.mp-site-footer .mp-copyright > .mp-brand {
+  color: #c5dfd0;
+  font-weight: 600;
+}
+
+.mp-site-footer .mp-copyright > span:last-child {
+  padding-left: 11px;
+  border-left: 1px solid rgba(151, 228, 192, .22);
+  color: #81988c;
+}
+
+.mp-site-footer .mp-copyright .mp-brand-icon {
+  width: 1.3em;
+  height: 1.5em;
+  margin: -.2em -.12em;
+}
+
+.mp-site-footer a {
+  color: #b0d8bd;
+  text-decoration: none;
+}
+
+.mp-site-footer a:hover {
+  color: #e7f9ec;
+}
